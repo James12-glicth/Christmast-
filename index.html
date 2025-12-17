@@ -3,144 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Question</title>
+<title>Real Talk</title>
 
 <style>
   body {
     margin: 0;
-    height: 100vh;
     font-family: Arial, sans-serif;
-    background: #0f0f12;
-    color: #f5f5f5;
+    background: black;
     overflow: hidden;
   }
 
-  /* FALLING WORDS */
-  .falling {
+  /* Overlay */
+  #overlay {
     position: fixed;
     inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .word {
-    position: absolute;
-    top: -20px;
-    font-size: 14px;
-    opacity: 0.15;
-    animation: fall linear infinite;
-  }
-
-  @keyframes fall {
-    to {
-      transform: translateY(110vh);
-    }
-  }
-
-  /* START SCREEN */
-  .start {
-    position: fixed;
-    inset: 0;
+    background: rgba(0,0,0,0.7);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 9999;
+    color: white;
     text-align: center;
-    z-index: 10;
   }
 
-  h1 {
-    margin-bottom: 35px;
-    font-weight: 500;
-  }
-
-  .buttons {
-    display: flex;
-    gap: 24px;
+  #message {
+    font-size: 22px;
+    margin-bottom: 30px;
   }
 
   button {
-    padding: 14px 34px;
-    font-size: 17px;
-    border-radius: 30px;
-    border: 1px solid #444;
-    background: transparent;
-    color: #f5f5f5;
+    padding: 15px 45px;
+    font-size: 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
   }
 
-  #no {
-    position: relative;
-    opacity: 0.6;
+  #yesBtn {
+    background: #ff4d6d;
+    color: white;
   }
 
-  /* VIDEO */
+  #noBtn {
+    background: gray;
+    color: white;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   video {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     display: none;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
   }
 </style>
 </head>
 
 <body>
 
-<!-- FALLING BACKGROUND -->
-<div class="falling" id="falling"></div>
-
-<!-- START -->
-<div class="start" id="start">
-  <h1>Hindi ’to masakit</h1>
-  <div class="buttons">
-    <button id="yes">YES</button>
-    <button id="no">NO</button>
-  </div>
+<div id="overlay">
+  <div id="message">Open mo, hindi naman masakit 💔</div>
+  <button id="yesBtn">YES</button>
+  <button id="noBtn">NO</button>
 </div>
 
-<!-- VIDEO -->
-<video id="video" muted loop playsinline>
+<video id="vid" controls playsinline>
   <source src="video.mp4" type="video/mp4">
+  Your browser does not support the video.
 </video>
 
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-  // Create falling words
-  const words = ["maybe", "almost", "us", "what if", "still you"];
-  const container = document.getElementById("falling");
+  const yesBtn = document.getElementById("yesBtn");
+  const overlay = document.getElementById("overlay");
+  const vid = document.getElementById("vid");
 
-  for (let i = 0; i < 25; i++) {
-    const span = document.createElement("span");
-    span.className = "word";
-    span.innerText = words[Math.floor(Math.random() * words.length)];
-    span.style.left = Math.random() * 100 + "vw";
-    span.style.animationDuration = 5 + Math.random() * 8 + "s";
-    span.style.animationDelay = Math.random() * 5 + "s";
-    container.appendChild(span);
-  }
-
-  // NO button dodges
-  const noBtn = document.getElementById("no");
-  function moveNo() {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 200 - 100;
-    noBtn.style.transform = translate(${x}px, ${y}px);
-  }
-  noBtn.addEventListener("mouseover", moveNo);
-  noBtn.addEventListener("touchstart", moveNo);
-
-  // YES → video + music
-  document.getElementById("yes").onclick = () => {
-    document.getElementById("start").style.display = "none";
-    const v = document.getElementById("video");
-    v.style.display = "block";
-    v.play();
-    document.getElementById("music").play();
+  yesBtn.onclick = () => {
+    overlay.style.display = "none";
+    vid.style.display = "block";
+    vid.play();
   };
 </script>
 
